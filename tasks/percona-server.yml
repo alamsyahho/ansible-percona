@@ -1,0 +1,28 @@
+---
+- name: Install Percona Server
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+   - Percona-Server-server-56
+  tags:
+    - percona-server
+
+- name: create mysql log directory
+  file:
+    path: /var/log/mysql
+    state: directory
+    mode: 0755
+    owner: mysql
+    group: mysql
+
+- name: create percona mysql configuration file
+  template:
+    src: my.cnf.j2
+    dest: /etc/my.cnf
+
+- name: restart percona mysql
+  service:
+    name: mysql
+    state: restarted
+    enabled: yes

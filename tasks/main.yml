@@ -1,0 +1,17 @@
+---
+- name: install percona repos
+  yum:
+    name: "{{ percona_repo }}"
+    state: present
+
+- name: install percona mysql client
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+   - Percona-Server-client-56
+   - Percona-Server-shared-56
+
+- include: percona-server.yml
+  when: install_percona_server == true
+  static: false
